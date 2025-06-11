@@ -554,32 +554,32 @@ class LlavaMetaForCausalLM(ABC):
                 image_features = pe_module(image_features, seg_idx).to(img_typ)
 
             elif self.sinusoidal_encoding_2d:
-grid_H, grid_W = 24, 24  # to change with different vision encoder
-B, N, D = image_features.shape
-device = image_features.device
+                grid_H, grid_W = 24, 24  # to change with different vision encoder
+                B, N, D = image_features.shape
+                device = image_features.device
 
-pe_grid = make_2d_sincos_pos_encoding(grid_H, grid_W, D).to(
-    device
-)  # (24,24,D)
-pe_flat = pe_grid.reshape(grid_H * grid_W, D).to(device)  # (576,D)
+                pe_grid = make_2d_sincos_pos_encoding(grid_H, grid_W, D).to(
+                    device
+                )  # (24,24,D)
+                pe_flat = pe_grid.reshape(grid_H * grid_W, D).to(device)  # (576,D)
 
-for b in range(B):
-    for m, (start, end) in enumerate(group_ranges[b]):
-        idxs = flat_indices[b][m]  # exact cells
+                for b in range(B):
+                    for m, (start, end) in enumerate(group_ranges[b]):
+                        idxs = flat_indices[b][m]  # exact cells
 
-        seg_len = end - start
+                        seg_len = end - start
 
-        if idxs.numel() == (seg_len - 1):
-            seg_len -= 1
-            start += 1
+                        if idxs.numel() == (seg_len - 1):
+                            seg_len -= 1
+                            start += 1
 
-        elif seg_len == (idxs.numel() - 1):
-            seg_len += 1
-            start -= 1
+                        elif seg_len == (idxs.numel() - 1):
+                            seg_len += 1
+                            start -= 1
 
-        assert idxs.numel() == seg_len  # now always true
-        idxs = idxs.to(torch.long).to(device)
-        image_features[b, start:end] += pe_flat[idxs]
+                        assert idxs.numel() == seg_len  # now always true
+                        idxs = idxs.to(torch.long).to(device)
+                        image_features[b, start:end] += pe_flat[idxs]
 
             elif self.learnable_encoding:
                 B, L, D = (

@@ -269,7 +269,7 @@ class InternVL2(lmms):
                 else:
                     pixel_values = None
                     num_patch_list = None
-                print("contexts", contexts)
+                # print("contexts", contexts)
 
                 if type(self.model).__name__ == "Sa2VAChatModel":
                     # image needs to be a Image.open type
@@ -292,7 +292,7 @@ class InternVL2(lmms):
                     response = response.split("<|im_end|>")[0]
                 except:
                     response = response
-                print("response", response)
+                # print("response", response)
             elif self.modality == "video":
                 assert len(visuals) == 1, f"Only one video is supported, but got {len(visuals)} videos."
                 video_path = visuals[0]

@@ -16,11 +16,11 @@ NUM_GPUS=${NUM_GPUS:-1}
 
 cd iu-lmms-eval/
 
-TASK=ai2d,mme,mmstar
+# TASK=ai2d,mme,mmstar
 # ,mmbench_en_dev,mmvp,cvbench
 # TASK=mme,mmstar
 # TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
-# TASK=mmvp,cvbench
+TASK=mmvp,cvbench
 # TASK=mmvp
 
 

@@ -1,5 +1,6 @@
 dataset_path: "arrow"
 dataset_kwargs:
+  # data_dir: "/mnt/nushare2/data/mnulli/llava_ov/playground/gowitheflow___aro-visual-relation/combined"
   data_dir: "/mnt/nushare2/data/mnulli/llava_ov/playground/gowitheflow___aro-visual-relation/default/0.0.0/3867ad4f46a1ac2e63be034d1fc77dd8c2ef7209"
 task: "aro-visual-relation"
 test_split: test

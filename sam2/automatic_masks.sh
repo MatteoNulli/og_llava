@@ -7,11 +7,13 @@ export HTTP_PROXY=http://httpproxy-tcop.vip.ebay.com:80
 export HTTPS_PROXY=http://httpproxy-tcop.vip.ebay.com:80
 export NO_PROXY=krylov,ams,ems,mms,localhost,127.0.0.1,.vip.hadoop.ebay.com,.vip.ebay.com,github.ebay.com,.tess.io,.corp.ebay.com,.ebayc3.com,.qa.ebay.com,.dev.ebay.com
 
-
+pip install --upgrade --proxy http://httpproxy-tcop.vip.ebay.com:80 fire
+pip install --upgrade --proxy http://httpproxy-tcop.vip.ebay.com:80 hydra-core
+pip install --upgrade --proxy http://httpproxy-tcop.vip.ebay.com:80 iopath
 # pip install --upgrade --proxy http://httpproxy-tcop.vip.ebay.com:80 numpy==1.26.4
 # pip install --upgrade --proxy http://httpproxy-tcop.vip.ebay.com:80 matplotlib
 # pip install --upgrade --proxy http://httpproxy-tcop.vip.ebay.com:80 sam2
-
+pip install --upgrade --proxy http://httpproxy-tcop.vip.ebay.com:80 fire
 ## LLaVa Captioning
 # echo creating masks for Captioning Data
 # DATA_PATH=/mnt/nushare2/data/mnulli/pretrainingdata/blip_laion_cc_sbu_558k.json  ## PATH TO LLAVA Captioning JSON FILE (.json) 
@@ -46,7 +48,7 @@ CAPTIONING=False ##FLAG FOR PROCESSING
 PARTITION_ID=0
 TOTAL_PARTITIONS=10
 
-cd /opt/krylov-workflow/src/run_fn_0/
+cd /opt/krylov-workflow/src/run_fn_0/sam2
 
 
 SAM2_CHECKPOINT=/mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data/checkpoints/sam2.1_hiera_large.pt

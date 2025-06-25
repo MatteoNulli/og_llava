@@ -12,14 +12,14 @@
 
 PORT=${PORT:-"29501"}
 NUM_MACHINES=${NUM_MACHINES:-1}
-NUM_GPUS=${NUM_GPUS:-2}
+NUM_GPUS=${NUM_GPUS:-1}
 
 cd iu-lmms-eval/
 
 # TASK=realworldqa,ai2d,mme,mmstar,mmbench_en_dev
 # TASK=mme,mmstar
-# TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
-TASK=mmvp,cvbench
+TASK=aro-visual-relation
+# TASK=mmvp,cvbench
 
 
 # if [[ "$TASK" =~ mmbench ]]; then
@@ -28,7 +28,7 @@ TASK=mmvp,cvbench
 # fi
 
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
-# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_no_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
+CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_no_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/4b_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/no_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_standard_llava/standard_llava15-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
@@ -56,10 +56,10 @@ TASK=mmvp,cvbench
 
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_avg_global-view-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-capEpochs-1-sftEpochs
 
-# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/subobject_tokenization-second_run-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-capEpochs-1-sftEpochs
+CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/subobject_tokenization-second_run-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-capEpochs-1-sftEpochs
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/avg_global_view-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/global_view-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
-CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 
 ## CUSTOM Encoding
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/custom_rot-noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS

@@ -164,6 +164,7 @@ def submit_task():
     task.add_directory(os.path.join(root_dir, "iu-lmms-eval/"))
     task.add_directory(os.path.join(root_dir, "scripts"))
     task.add_directory(os.path.join(root_dir, "llava"))
+    task.add_directory(os.path.join(root_dir, "cambrian"))
     task.add_file(args.script)
 
     if args.cluster == "tess38":

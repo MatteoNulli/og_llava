@@ -35,6 +35,11 @@ from .masking_utils import (
     downsample_mask_to_1d_counts,
     check_resised_image_masks,
 )
+from .positional_encoding_utils import (
+    fixed_sinusoidal_encoding,
+    fixed_sinusoidal_encoding_2d,
+    learnable_positional_encoding_1d,
+)
 
 from llava.constants import (
     IGNORE_INDEX,
@@ -57,28 +62,6 @@ class BOMMaskToken(nn.Module):
 
     def forward(self, x=None):
         return self.mm_bom_mask_token
-
-
-def build_sinusoidal(max_pos: int, dim: int, zero_pad: bool = True):
-    """
-    Returns a [max_pos+(1 if zero_pad else 0), dim] tensor:
-     - row 0 is all zeros (if zero_pad=True)
-     - rows 1..max_pos are sin/cos encodings for positions 0..max_pos-1
-    """
-    # base table for positions 0..max_pos-1
-    position = torch.arange(max_pos, dtype=torch.float32).unsqueeze(1)  # [max_pos,1]
-    div_term = torch.exp(
-        torch.arange(0, dim, 2, dtype=torch.float32) * -(math.log(10000.0) / dim)
-    )  # [dim/2]
-    pe = torch.zeros(max_pos, dim, dtype=torch.float32)  # [max_pos,dim]
-    pe[:, 0::2] = torch.sin(position * div_term)
-    pe[:, 1::2] = torch.cos(position * div_term)
-
-    if zero_pad:
-        # prepend a zero‐vector so index=0 → no encoding
-        return torch.cat([torch.zeros(1, dim), pe], dim=0)  # [max_pos+1,dim]
-    else:
-        return pe
 
 
 def build_24x24_sinusoidal(d_model: int) -> torch.FloatTensor:
@@ -133,44 +116,6 @@ def build_24x24_sinusoidal(d_model: int) -> torch.FloatTensor:
     return full.view(Npos, d_model)  # [576, d_model]
 
 
-def make_2d_sincos_pos_encoding(
-    H: int = 24,
-    W: int = 24,
-    D: int = 768,  # any even number
-    base: float = 10_000.0,
-) -> torch.Tensor:
-    """
-    Returns a tensor of shape (H, W, D) with fixed 2-D sinusoidal positional encoding.
-    Half the channels encode rows, half encode columns.
-    """
-    assert D % 2 == 0, "D must be even."
-    d_half = D // 2  # channels per axis
-    # ----- frequencies (like in the paper) -----
-    idx = torch.arange(d_half // 2, dtype=torch.float32)  # 0 … d_half/2-1
-    freq = base ** (2 * idx / d_half)  # (d_half/2,)
-
-    # ----- raw positions -----
-    y = torch.arange(H, dtype=torch.float32)[:, None]  # (H, 1)
-    x = torch.arange(W, dtype=torch.float32)[:, None]  # (W, 1)
-
-    # ----- apply sin / cos -----
-    y_enc = y / freq  # broadcasting (H, d_half/2)
-    x_enc = x / freq  # (W, d_half/2)
-
-    y_sin, y_cos = torch.sin(y_enc), torch.cos(y_enc)  # each (H, d_half/2)
-    x_sin, x_cos = torch.sin(x_enc), torch.cos(x_enc)  # each (W, d_half/2)
-
-    # ----- interleave sin & cos so they alternate -----
-    y_emb = torch.stack((y_sin, y_cos), dim=-1).flatten(1)  # (H, d_half)
-    x_emb = torch.stack((x_sin, x_cos), dim=-1).flatten(1)  # (W, d_half)
-
-    # ----- combine into grid -----
-    pos_y = y_emb[:, None, :].repeat(1, W, 1)  # (H, W, d_half)
-    pos_x = x_emb[None, :, :].repeat(H, 1, 1)  # (H, W, d_half)
-    pos = torch.cat((pos_y, pos_x), dim=-1)  # (H, W, D)
-    return pos
-
-
 def flat_indices_for_box(
     box: Tuple[int, int, int, int], grid_w: int = 24, device="cpu"
 ) -> torch.Tensor:
@@ -183,22 +128,6 @@ def flat_indices_for_box(
     xs = torch.arange(x0, x0 + w, device=device)
     grid_y, grid_x = torch.meshgrid(ys, xs, indexing="ij")  # (h,w)
     return (grid_y * grid_w + grid_x).reshape(-1)
-
-
-class SegmentSinusoidalPE(nn.Module):
-    def __init__(self, max_segs: int, d_model: int):
-        super().__init__()
-        sinus = build_sinusoidal(max_segs, d_model, zero_pad=True)
-        self.register_buffer("sinus", sinus)  # shape [max_segs+1, d_model]
-
-    def forward(self, x: torch.Tensor, seg_idx: torch.LongTensor):
-        """
-        x:       [B, L, D]
-        seg_idx: [B, L] with values in 0..max_segs
-                 (0 = no‐segment, 1..k real segment IDs)
-        """
-        # gather and add in one go
-        return x + self.sinus[seg_idx]  # advanced‐index on GPU → [B,L,D]
 
 
 class MasksPositionalEncoding(nn.Module):
@@ -431,13 +360,13 @@ class LlavaMetaForCausalLM(ABC):
             torch.Tensor: Image features outputted from multimodal projector.
         """
 
-        self.global_view = False
+        self.global_view = True
         self.averaging = False
         self.mask_removing = False
         self.mask_limiting = False
         self.mask_limit = 20
-        self.averaging_global_view = False
-        self.no_masktoken = False
+        self.averaging_global_view = True
+        self.no_masktoken = True
         self.use_sliding_window = False
         self.number_of_masks = 5
         self.use_dummy_masks = False
@@ -457,7 +386,7 @@ class LlavaMetaForCausalLM(ABC):
 
             ## B.O. MASKING PART
             mask_embedder = MaskEmbedder(
-                model=self,  ## LlavaLlamaForCausalLM (contains bom_mask_token at inference time)
+                model=self,  ## LlavaLlamaForCausalLM
                 config=self.config,
                 vision_tower=self.get_model().get_vision_tower(),
             )
@@ -522,93 +451,24 @@ class LlavaMetaForCausalLM(ABC):
             ## E.O. MASKING PART
             image_features = self.get_model().mm_projector(image_features)
 
-            img_typ = image_features.dtype
-            img_device = image_features.device
             ## Pos encoding
-            ## sinusoidal fixed encodings
             self.sinusoidal_encoding_fixed = False
-            self.sinusoidal_encoding_2d = True
+            self.sinusoidal_encoding_2d = False
             self.learnable_encoding = False
 
             if self.sinusoidal_encoding_fixed:
-                B, L, D = (
-                    image_features.shape[0],
-                    image_features.shape[1],
-                    image_features.shape[-1],
-                )
-                max_segs_gr_segs = max(len(spans) for spans in group_ranges)
-                MAX_SEGS = 300
-                if max_segs_gr_segs > MAX_SEGS:
-                    return image_features
-
-                # 1) build seg_idx tensor
-                seg_idx = torch.zeros(B, L, dtype=torch.long)
-                for b, spans in enumerate(group_ranges):
-                    for s_id, (start, end) in enumerate(spans):
-                        seg_idx[b, start:end] = s_id
-
-                pe_module = SegmentSinusoidalPE(max_segs=MAX_SEGS, d_model=D).to(
-                    img_device
-                )
-                # print("pe_module.sinus.shape", pe_module.sinus.shape)
-                image_features = pe_module(image_features, seg_idx).to(img_typ)
+                image_features = fixed_sinusoidal_encoding(image_features, group_ranges)
 
             elif self.sinusoidal_encoding_2d:
-                grid_H, grid_W = 24, 24  # to change with different vision encoder
-                B, N, D = image_features.shape
-                device = image_features.device
-
-                pe_grid = make_2d_sincos_pos_encoding(grid_H, grid_W, D).to(
-                    device
-                )  # (24,24,D)
-                pe_flat = pe_grid.reshape(grid_H * grid_W, D).to(device)  # (576,D)
-
-                for b in range(B):
-                    for m, (start, end) in enumerate(group_ranges[b]):
-                        idxs = flat_indices[b][m]  # exact cells
-
-                        seg_len = end - start
-
-                        if idxs.numel() == (seg_len - 1):
-                            seg_len -= 1
-                            start += 1
-
-                        elif seg_len == (idxs.numel() - 1):
-                            seg_len += 1
-                            start -= 1
-
-                        assert idxs.numel() == seg_len  # now always true
-                        idxs = idxs.to(torch.long).to(device)
-                        image_features[b, start:end] += pe_flat[idxs]
+                image_features = fixed_sinusoidal_encoding_2d(
+                    image_features, group_ranges, flat_indices
+                )
 
             elif self.learnable_encoding:
-                B, L, D = (
-                    image_features.shape[0],
-                    image_features.shape[1],
-                    image_features.shape[-1],
+                image_features = learnable_positional_encoding_1d(
+                    self.model, image_features, group_ranges
                 )
-                MAX_SEGS = 300
-
-                # 1) build seg_idx tensor
-                seg_idx = torch.zeros(B, L, dtype=torch.long)
-                for b, spans in enumerate(group_ranges):
-                    for s_id, (start, end) in enumerate(spans):
-                        seg_idx[b, start:end] = s_id
-
-                seg_idx = seg_idx.to(img_device, dtype=torch.long)
-                image_features = image_features.to(img_device)
-                ##clamping to 300 masks
-                seg_idx = seg_idx.clamp(max=MAX_SEGS)
-
-                image_features = self.model.mm_masks_pos_encoding(
-                    image_features, seg_idx
-                ).to(dtype=img_typ)
-
-                image_features = image_features + seg_idx
-
-                # def forward(self, x: torch.Tensor, seg_idx: torch.LongTensor):
-                # # x: [B, L, D], seg_idx: [B, L] in 0..max_segs
-                # return x + self.seg_embed(seg_idx)
+            ##
 
             return image_features
 

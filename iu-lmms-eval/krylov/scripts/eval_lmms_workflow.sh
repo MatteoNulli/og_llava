@@ -7,6 +7,7 @@ export no_proxy=krylov,ams,ems,mms,localhost,127.0.0.1,.vip.hadoop.ebay.com,.vip
 export HTTP_PROXY=http://httpproxy-tcop.vip.ebay.com:80
 export HTTPS_PROXY=http://httpproxy-tcop.vip.ebay.com:80
 export NO_PROXY=krylov,ams,ems,mms,localhost,127.0.0.1,.vip.hadoop.ebay.com,.vip.ebay.com,github.ebay.com,.tess.io,.corp.ebay.com,.ebayc3.com,.qa.ebay.com,.dev.ebay.com
+export PORT=29500        # or any free port ≥1024
 
 
 NUM_MACHINES=${NUM_MACHINES:-1}
@@ -56,6 +57,14 @@ TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
 
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/subobject_tokenization-second_run-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-capEpochs-1-sftEpochs
 
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_no_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
+
+
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/learnable_encoding_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 
 ## CUSTOM Encoding
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/custom_rot-noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
@@ -63,7 +72,7 @@ TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/learnable_encoding_aftermlp_noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/learnable_encoding_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
-CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 
 
 ##CAMBRIAN
@@ -71,17 +80,17 @@ CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encodin
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-Cambrian7M_withsystemprompt.json-lora-1-EPOCHS
 
 
-MODEL_BASE=/mnt/mtrepo/data/wwalentynowicz/models/Meta-Llama-3_1-8B-Instruct
-# MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-3B-Instruct
-# MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-1B-Instruct
-# builder in LLava expect a particular model_name for parsing
-MODEL_NAME=llava
-CONV_MODE=llama3
-MODEL_ARGS=pretrained=$CKPT_PATH,model_base=$MODEL_BASE,conv_template=$CONV_MODE
+# MODEL_BASE=/mnt/mtrepo/data/wwalentynowicz/models/Meta-Llama-3_1-8B-Instruct
+# # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-3B-Instruct
+# # # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-1B-Instruct
+# # # builder in LLava expect a particular model_name for parsing
+# MODEL_NAME=llava
+# CONV_MODE=llama3
+# MODEL_ARGS=pretrained=$CKPT_PATH,model_base=$MODEL_BASE,conv_template=$CONV_MODE
 
-# CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/nyu-visionx--cambrian-8b
-# MODEL_NAME=cambrian
-# MODEL_ARGS=pretrained=$CKPT_PATH
+CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/nyu-visionx--cambrian-8b
+MODEL_NAME=cambrian
+MODEL_ARGS=pretrained=$CKPT_PATH
 
 # CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/models--ByteDance--Sa2VA-8B/snapshots/43ee408e24e7fc571a4e33862f663c2dbc6e11da
 # MODEL_NAME=internvl2

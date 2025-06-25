@@ -46,7 +46,7 @@ def mmvp_process_results(doc, results):
     gt = doc["Correct Answer"]
 
     return {
-        "match_score": {"prediction": pred, "answer": gt},
+        "match_score": {"prediction": pred, "answer": gt, "options": doc["Options"]},
     }
 
 
@@ -79,9 +79,11 @@ def mmvp_acc_results(results):
         total_predictions += 1
         pred = normalize_option(result["prediction"])
         ans = normalize_option(result["answer"])
+
         print("")
         print("prediction:", result["prediction"], "normalized pred:", pred)
         print("answer:", result["answer"], "normalized answer:", ans)
+        breakpoint()
         if ans in pred:
             correct_predictions += 1
 

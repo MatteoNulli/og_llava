@@ -316,14 +316,17 @@ class MaskEmbedder(torch.nn.Module):
         # 4) adjust starts so that every chunk *after* the first begins **two indices**
         #    after the previous chunk’s end.  This adds the required one‑based offset
         #    and fixes any accidental overlaps.
-        adjusted_starts: List[int] = [starts[0]]
-        for i in range(1, len(starts)):
-            # First, apply the mandated +1 offset.
-            tentative = starts[i] + 1
-            # Guarantee at least a two‑index gap w.r.t. the previous chunk’s end.
-            if tentative - ends[i - 1] < 2:
-                tentative = ends[i - 1] + 2
-            adjusted_starts.append(tentative)
+        if self.model.no_masktoken:
+            adjusted_starts = starts
+        else:
+            adjusted_starts: List[int] = [starts[0]]
+            for i in range(1, len(starts)):
+                # First, apply the mandated +1 offset.
+                tentative = starts[i] + 1
+                # Guarantee at least a two‑index gap w.r.t. the previous chunk’s end.
+                if tentative - ends[i - 1] < 2:
+                    tentative = ends[i - 1] + 2
+                adjusted_starts.append(tentative)
 
         return list(zip(adjusted_starts, ends))
 

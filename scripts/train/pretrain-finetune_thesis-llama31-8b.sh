@@ -67,7 +67,7 @@ VIS_TOWER_NAME=$(echo "$VIS_TOWER" | awk -F'/' '{print $(NF-1)"-"$NF}')
 echo VIS_TOWER_NAME=$VIS_TOWER_NAME
 
 
-BASE_RUN_NAME="2d_sinusoidal_encoding_fixed_aftermlp_noglob-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$CAP_EPOCHS-EPOCHS"
+BASE_RUN_NAME="nomasktoken_avg_globalview-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$CAP_EPOCHS-EPOCHS"
 BASE_SAVE_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/captioning_8b/${BASE_RUN_NAME}
 
 
@@ -141,7 +141,7 @@ VIS_TOWER_NAME=$(echo "$VIS_TOWER" | awk -F'/' '{print $(NF-1)"-"$NF}')
 
 echo VIS_TOWER_NAME=$VIS_TOWER_NAME
 
-SFT_RUN_NAME="2d_sinusoidal_encoding_fixed_aftermlp_noglob-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$FILE_NAME_SFT-lora-$SFT_EPOCHS-EPOCHS"
+SFT_RUN_NAME="nomasktoken_avg_globalview-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$FILE_NAME_SFT-lora-$SFT_EPOCHS-EPOCHS"
 
 echo SFT_RUN_NAME=$SFT_RUN_NAME
 

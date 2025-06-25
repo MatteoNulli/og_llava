@@ -368,15 +368,15 @@ class Llava(lmms):
             self.model.model.custom_rotary_embedding = False
             if task == "cvbench":
                 base_dir = "/mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_benchmarks/nyu-cvbench/arrays"
-                self.model.model.sam2_masking_token = True
+                self.model.model.sam2_masking_token = False
                 self.model.model.custom_rotary_embedding = False
             elif task == "mmvp":
                 base_dir = "/mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_benchmarks/mmvp/arrays"
-                self.model.model.sam2_masking_token = True
-                self.model.model.custom_rotary_embedding = False
-            elif task == "aro-visual-relation":
-                base_dir = "/mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_benchmarks/gowitheflow___aro-visual-relation/arrays"
                 self.model.model.sam2_masking_token = False
+                self.model.model.custom_rotary_embedding = False
+            elif "aro" in task:
+                base_dir = "/mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_benchmarks/gowitheflow___aro/arrays"
+                self.model.model.sam2_masking_token = True
                 self.model.model.custom_rotary_embedding = False
             elif task == "mme":
                 base_dir = "/mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_benchmarks/mme/arrays"
@@ -392,7 +392,6 @@ class Llava(lmms):
                     image_id = visual[-1]
 
                     # print("visual", visual)
-
                     mask_files = self.find_mask_files(
                         base_dir=base_dir,
                         image_id=image_id,

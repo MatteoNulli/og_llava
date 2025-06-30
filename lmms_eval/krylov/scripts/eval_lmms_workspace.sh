@@ -24,6 +24,7 @@ TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
 # TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
 # TASK=mmvp,cvbench
 # TASK=cvbench
+# TASK=conme-replace-att,conme-replace-rel,conme-replace-obj
 
 
 # if [[ "$TASK" =~ mmbench ]]; then
@@ -31,6 +32,8 @@ TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
 #     pip install --proxy http://httpproxy-tcop.vip.ebay.com:80 pycocotools
 # fi
 
+
+##INTERNALLY TRAINED
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_no_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_no_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora/checkpoint-4880
@@ -89,7 +92,11 @@ TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_standard_llava/standard-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-Cambrian7M_withsystemprompt.json-v2-lora-1-EPOCHS
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-Cambrian7M_withsystemprompt.json-lora-1-EPOCHS
 
+### LAST TWO CAMBRIANS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/nomasktoken_avg_globalview-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-Cambrian7M_withsystemprompt.json-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/nomasktoken_no_globalview-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-Cambrian7M_withsystemprompt.json-lora-1-EPOCHS
 
+## to uncomment if using internal models (choose the correct backbone).
 # MODEL_BASE=/mnt/mtrepo/data/wwalentynowicz/models/Meta-Llama-3_1-8B-Instruct
 # # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-3B-Instruct
 # # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-1B-Instruct
@@ -98,6 +105,8 @@ TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
 # CONV_MODE=llama3
 # MODEL_ARGS=pretrained=$CKPT_PATH,model_base=$MODEL_BASE,conv_template=$CONV_MODE
 
+
+##OPEN SOURCE MODELS
 CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/nyu-visionx--cambrian-8b
 MODEL_NAME=cambrian
 MODEL_ARGS=pretrained=$CKPT_PATH
@@ -119,11 +128,9 @@ MODEL_ARGS=pretrained=$CKPT_PATH
 # MODEL_NAME=llava_hf
 # MODEL_ARGS=pretrained=$CKPT_PATH
 
-
-# CKPT_PATH=/mnt/nushare2/data/vorshulevich/models/vlm/llava_ov/finetune/superpod_llava-onevision-siglip2-Qwen2-7B-Instruct-mid_stage-ov_stage-full-lm-qwen2
-# MODEL_NAME=llava
+# CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/models--llava-hf--llama3-llava-next-8b-hf/snapshots/b041c0d0ea0dd0196d147206c210c8d1752fc2da
+# MODEL_NAME=llava_hf
 # MODEL_ARGS=pretrained=$CKPT_PATH
-
 
 echo $TASK
 TASK_SUFFIX="${TASK//,/_}"

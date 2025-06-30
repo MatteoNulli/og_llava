@@ -286,8 +286,8 @@ class Cambrian(lmms):
 
             image = visual_paths[0]
             question = contexts[0]
-            print("image", image)
-            print("question", question)
+            # print("image", image)
+            # print("question", question)
             input_ids, image_tensor, image_sizes, prompt = process(image, question, self.tokenizer, self.image_processor, self.model.config, self.conv_mode)
             input_ids = input_ids.to(device=self.model.device, non_blocking=True)
 
@@ -309,7 +309,7 @@ class Cambrian(lmms):
                 if term:
                     text_outputs = text_outputs.split(term)[0]
 
-            print("text_outputs", text_outputs)
+            # print("text_outputs", text_outputs)
             res.append(text_outputs)
 
             # for visual_path in visual_paths:

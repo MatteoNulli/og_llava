@@ -26,10 +26,10 @@ export NO_PROXY=krylov,ams,ems,mms,localhost,127.0.0.1,.vip.hadoop.ebay.com,.vip
 # echo "Modified Permissions of /mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_cap/"
 
 ##ARO
-chmod -R a+rw "/mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_benchmarks/gowitheflow___aro/arrays/partition_0"
+chmod -R a+rw "/mnt/nushare2/data/mnulli/"
 # done
 
-echo "Modified Permissions of /mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_benchmarks/gowitheflow___aro/arrays/partition_0"
+echo "Modified Permissions of /mnt/nushare2/data/mnulli/, everyone should be able to read and write."
 
 
 # cd /opt/krylov-workflow/src/run_fn_0/

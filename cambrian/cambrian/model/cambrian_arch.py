@@ -583,10 +583,8 @@ class CambrianMetaForCausalLM(ABC):
     ):
         # vision_tower = self.get_vision_tower()
         vision_tower_aux_list = self.get_model().get_vision_tower_aux_list()
-        print("vision_tower_aux_list", len(vision_tower_aux_list))
         if len(input_ids.shape) == 1:
             input_ids = input_ids.unsqueeze(-1)
-        print("input_ids.shape", input_ids.shape)
         if vision_tower_aux_list is None or images is None or input_ids.shape[1] == 1:
             return (
                 input_ids,

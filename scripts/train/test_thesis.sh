@@ -45,12 +45,12 @@ CUSTOM_ROTARY_EMBEDDING=False
 
 echo "Pretraining initialized with SAM2_MASKING_TOKEN=$SAM2_MASKING_TOKEN and CUSTOM_ROTARY_EMBEDDING=$CUSTOM_ROTARY_EMBEDDING"
 
-MODEL_NAME="Meta-Llama-3_1-8B-Instruct"
-MODEL_DIR=/mnt/mtrepo/data/wwalentynowicz/models/${MODEL_NAME}
+# MODEL_NAME="Meta-Llama-3_1-8B-Instruct"
+# MODEL_DIR=/mnt/mtrepo/data/wwalentynowicz/models/${MODEL_NAME}
 # MODEL_NAME="meta-llama--Llama-3.2-1B-Instruct"
 # MODEL_DIR=/mnt/nushare2/data/mnulli/model_zoos/language_models/${MODEL_NAME}
-# MODEL_NAME="meta-llama--Llama-3.2-3B-Instruct"
-# MODEL_DIR=/mnt/nushare2/data/mnulli/model_zoos/language_models/${MODEL_NAME}
+MODEL_NAME="meta-llama--Llama-3.2-3B-Instruct"
+MODEL_DIR=/mnt/nushare2/data/mnulli/model_zoos/language_models/${MODEL_NAME}
 
 #standard llava pretraining data
 DATA_PATH=/mnt/nushare2/data/mnulli/pretrainingdata/blip_laion_cc_sbu_558k.json
@@ -67,8 +67,8 @@ VIS_TOWER_NAME=$(echo "$VIS_TOWER" | awk -F'/' '{print $(NF-1)"-"$NF}')
 echo VIS_TOWER_NAME=$VIS_TOWER_NAME
 
 
-BASE_RUN_NAME="todel_2d_sinusoidal_encoding_fixed_aftermlp_nomasktoken_noglob-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$CAP_EPOCHS-EPOCHS"
-BASE_SAVE_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/captioning_8b/${BASE_RUN_NAME}
+BASE_RUN_NAME="todel_nomasktoken_avg_globalview-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$CAP_EPOCHS-EPOCHS"
+BASE_SAVE_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/captioning_3b/${BASE_RUN_NAME}
 
 
 mkdir -p $BASE_SAVE_DIR
@@ -122,12 +122,12 @@ CUSTOM_ROTARY_EMBEDDING=False
 
 echo "SFT initialized with SAM2_MASKING_TOKEN=$SAM2_MASKING_TOKEN and CUSTOM_ROTARY_EMBEDDING=$CUSTOM_ROTARY_EMBEDDING"
 
-MODEL_NAME="Meta-Llama-3_1-8B-Instruct"
-MODEL_DIR=/mnt/mtrepo/data/wwalentynowicz/models/${MODEL_NAME}
+# MODEL_NAME="Meta-Llama-3_1-8B-Instruct"
+# MODEL_DIR=/mnt/mtrepo/data/wwalentynowicz/models/${MODEL_NAME}
 # MODEL_NAME="meta-llama--Llama-3.2-1B-Instruct"
 # MODEL_DIR=/mnt/nushare2/data/mnulli/model_zoos/language_models/${MODEL_NAME}
-# MODEL_NAME="meta-llama--Llama-3.2-3B-Instruct"
-# MODEL_DIR=/mnt/nushare2/data/mnulli/model_zoos/language_models/${MODEL_NAME}
+MODEL_NAME="meta-llama--Llama-3.2-3B-Instruct"
+MODEL_DIR=/mnt/nushare2/data/mnulli/model_zoos/language_models/${MODEL_NAME}
 
 DATA_PATH_SFT=/mnt/nushare2/data/mnulli/verified_conversations/finetuningdata/llava_mix665k_format_adjusted.json
 IMG_DIR='None' 
@@ -141,7 +141,7 @@ VIS_TOWER_NAME=$(echo "$VIS_TOWER" | awk -F'/' '{print $(NF-1)"-"$NF}')
 
 echo VIS_TOWER_NAME=$VIS_TOWER_NAME
 
-SFT_RUN_NAME="todel_2d_sinusoidal_encoding_fixed_aftermlp_nomasktoken_noglob-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$FILE_NAME_SFT-lora-$SFT_EPOCHS-EPOCHS"
+SFT_RUN_NAME="todel_nomasktoken_avg_globalview-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$FILE_NAME_SFT-lora-$SFT_EPOCHS-EPOCHS"
 
 echo SFT_RUN_NAME=$SFT_RUN_NAME
 
@@ -149,7 +149,7 @@ PROJECTOR=${BASE_SAVE_DIR}/mm_projector.bin
 MASK_TOKEN=${BASE_SAVE_DIR}/mm_bom_mask_token.bin
 POS_ENCODING=${BASE_SAVE_DIR}/mm_masks_pos_encoding.bin
 
-SAVE_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/${SFT_RUN_NAME}
+SAVE_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/${SFT_RUN_NAME}
 
 
 mkdir -p $SAVE_DIR

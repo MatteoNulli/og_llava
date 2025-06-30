@@ -22,7 +22,7 @@ from loguru import logger as eval_logger
 
 import sys
 
-cambrian_pth = os.path.abspath(os.path.join(os.path.split(__file__)[0], "../../../cambrian"))  # -> /data/chatgpt/notebooks/mnulli/llava/iu-lmms-eval/lmms_eval/models/ --> /data/chatgpt/notebooks/mnulli/llava/cambrian
+cambrian_pth = os.path.abspath(os.path.join(os.path.split(__file__)[0], "../../../cambrian"))  # -> /data/chatgpt/notebooks/mnulli/llava/lmms_eval/lmms_eval/models/ --> /data/chatgpt/notebooks/mnulli/llava/cambrian
 print("cambrian_pth", cambrian_pth)
 sys.path.append(f"{cambrian_pth}")
 
@@ -283,10 +283,11 @@ class Cambrian(lmms):
             until.append("<|eot_id|>")
 
             # image = Image.open(visual_paths[0]).convert("RGB")
-            print("visual_paths", visual_paths)
+
             image = visual_paths[0]
             question = contexts[0]
-            print("contexts", contexts)
+            print("image", image)
+            print("question", question)
             input_ids, image_tensor, image_sizes, prompt = process(image, question, self.tokenizer, self.image_processor, self.model.config, self.conv_mode)
             input_ids = input_ids.to(device=self.model.device, non_blocking=True)
 

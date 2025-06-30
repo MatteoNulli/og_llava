@@ -16,7 +16,7 @@ export NO_PROXY=krylov,ams,ems,mms,localhost,127.0.0.1,.vip.hadoop.ebay.com,.vip
 # pip install --proxy http://httpproxy-tcop.vip.ebay.com:80 pycocotools
 
 export CUDA_VISIBLE_DEVICES=0
-export CUDA_LAUNCH_BLOCKING=1 TORCH_USE_CUDA_DSA=1
+export CUDA_LAUNCH_BLOCKING=1 TORCH_USE_CUDA_DSA=0
 
 NUM_MACHINES=${NUM_MACHINES:-1}
 NUM_GPUS=${NUM_GPUS:-1}
@@ -68,21 +68,33 @@ NUM_GPUS=${NUM_GPUS:-1}
 # MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 # MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/global_view-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 
-MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft/noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft/noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/1d_sinusoidal_encoding_fixed_aftermlp_nomasktoken_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# # MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encoding_fixed_aftermlp_nomasktoken_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# # MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/learnable_posencoding_fixed_aftermlp_nomasktoken_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 
+
+
+# MODEL_NAME=$(basename "$MODEL_DIR")
+# MODEL_BASE=/mnt/mtrepo/data/wwalentynowicz/models/Meta-Llama-3_1-8B-Instruct
+# # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-3B-Instruct
+# # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-1B-Instruct
+# CONV_MODE='llama3'
+# MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/nomasktoken_no_globalview-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/nomasktoken_avg_globalview-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/nomasktoken_globalview-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# MODEL_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/sft/noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+
+# MODEL_DIR=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/models--llava-hf--llama3-llava-next-8b-hf/snapshots/b041c0d0ea0dd0196d147206c210c8d1752fc2da
+MODEL_DIR=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/nyu-visionx--cambrian-8b
+
+# MODEL_DIR=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/models--ByteDance--Sa2VA-8B/snapshots/43ee408e24e7fc571a4e33862f663c2dbc6e11da
 
 MODEL_NAME=$(basename "$MODEL_DIR")
 # MODEL_BASE=/mnt/mtrepo/data/wwalentynowicz/models/Meta-Llama-3_1-8B-Instruct
 MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-3B-Instruct
 # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-1B-Instruct
 CONV_MODE='llama3'
-
-
-# MODEL_DIR=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/models--ByteDance--Sa2VA-8B/snapshots/43ee408e24e7fc571a4e33862f663c2dbc6e11da
-# MODEL_NAME=$(basename "$MODEL_DIR")
-# MODEL_BASE=/mnt/mtrepo/data/wwalentynowicz/models/Meta-Llama-3_1-8B-Instruct
-# # # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-1B-Instruct
-# CONV_MODE='llama3'
 
 
 

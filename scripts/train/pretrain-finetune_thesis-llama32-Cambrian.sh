@@ -67,8 +67,8 @@ VIS_TOWER_NAME=$(echo "$VIS_TOWER" | awk -F'/' '{print $(NF-1)"-"$NF}')
 echo VIS_TOWER_NAME=$VIS_TOWER_NAME
 
 
-BASE_RUN_NAME="noglob-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$CAP_EPOCHS-EPOCHS"
-BASE_SAVE_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/captioning/${BASE_RUN_NAME}
+BASE_RUN_NAME="nomasktoken_no_globalview-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$CAP_EPOCHS-EPOCHS"
+BASE_SAVE_DIR=/mnt/nushare2/data/mnulli/thesis/testruns/captioning_3b/${BASE_RUN_NAME}
 
 
 # mkdir -p $BASE_SAVE_DIR
@@ -143,7 +143,7 @@ VIS_TOWER_NAME=$(echo "$VIS_TOWER" | awk -F'/' '{print $(NF-1)"-"$NF}')
 
 echo VIS_TOWER_NAME=$VIS_TOWER_NAME
 
-SFT_RUN_NAME="noglob-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$FILE_NAME_SFT-lora-$SFT_EPOCHS-EPOCHS"
+SFT_RUN_NAME="nomasktoken_no_globalview-$MODEL_NAME-$VIS_TOWER_NAME-$FILE_NAME_CAP-$FILE_NAME_SFT-lora-$SFT_EPOCHS-EPOCHS"
 
 echo SFT_RUN_NAME=$SFT_RUN_NAME
 

@@ -7,7 +7,7 @@ from pykrylov.util.consts import EXP_ID
 import subprocess
 
 root_dir = os.path.dirname(os.path.abspath(__file__))
-if "iu-lmms-eval/" in root_dir:
+if "lmms_eval/" in root_dir:
     root_dir = os.path.abspath(os.path.join(root_dir, "..", ".."))
 
 MASTER_PORT = 2020
@@ -161,7 +161,7 @@ def submit_task():
         # task.mount_pvc("mtrepo", "nlp-ebert-02", args.cluster)
         task.mount_pvc("nushare2", "krylov-user-pvc-nlp-01", args.cluster)
 
-    task.add_directory(os.path.join(root_dir, "iu-lmms-eval/"))
+    task.add_directory(os.path.join(root_dir, "lmms_eval/"))
     task.add_directory(os.path.join(root_dir, "scripts"))
     task.add_directory(os.path.join(root_dir, "llava"))
     task.add_directory(os.path.join(root_dir, "cambrian"))

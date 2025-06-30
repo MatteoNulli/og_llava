@@ -25,7 +25,7 @@ def aro_doc_to_visual(doc):
     # except:
     # print('\n Opening the image in a different way... \n Image is probably in bytes, string or different format. \n')
     # byts = ast.literal_eval(doc['image'])['bytes']
-    return [doc["image"].convert("RGB"), doc["image"]]
+    return [doc["image"].convert("RGB")]
 
 
 def aro_order_doc_to_visual(doc):

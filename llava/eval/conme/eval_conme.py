@@ -85,6 +85,8 @@ from llava.mm_utils import (
     get_model_name_from_path,
 )
 
+from lmms_eval.lmms_eval.models.cambrian import Cambrian, process, make_context
+
 
 def string_matching_acc(df, n_errors):
     print("Processing dataframe...")
@@ -178,22 +180,23 @@ def load_generative_model(args, device):
         cambrian_pth = os.path.abspath(
             os.path.join(os.path.split(__file__)[0], "../../../cambrian")
         )  # -> /data/chatgpt/notebooks/mnulli/llava/llava/eval/conme/ --> /data/chatgpt/notebooks/mnulli/llava/cambrian
-        # print("cambrian_pth", cambrian_pth)
-        # sys.path.append(f"{cambrian_pth}")
+        print("cambrian_pth", cambrian_pth)
+        sys.path.append(f"{cambrian_pth}")
 
-        # from cambrian.conversation import conv_templates
-        # from cambrian.mm_utils import (
-        #     get_model_name_from_path,
-        #     process_images,
-        #     tokenizer_image_token,
-        # )
-        # from cambrian.model.builder import load_pretrained_model
+        from cambrian.conversation import conv_templates
+        from cambrian.mm_utils import (
+            get_model_name_from_path,
+            process_images,
+            tokenizer_image_token,
+        )
+        from cambrian.model.builder import load_pretrained_model
 
         pretrained = args.model_path
         device = (
-            torch.device(f"cuda:{accelerator.local_process_index}")
-            if accelerator.num_processes > 1
-            else "cuda:0"
+            "cuda:0"
+            # torch.device(f"cuda:{accelerator.local_process_index}")
+            # if accelerator.num_processes > 1
+            # else "cuda:0"
         )
 
         model_name = get_model_name_from_path(pretrained)
@@ -203,23 +206,20 @@ def load_generative_model(args, device):
 
         if "nyu-visionx--cambrian-8b" in model_name:
             model_name = "cambrian-8b"
-        conv_mode = {
-            "cambrian-8b": "llama_3",
-            "cambrian-13b": "vicuna_v1",
-            "cambrian-34b": "chatml_direct",
-        }.get(model_name)
+
 
     elif "sa2va" in args.model_path.lower():
         print(f"Loading sa2va from {args.model_path}")
-        model = AutoModel.from_pretrained(
-            args.model_path,
-            torch_dtype=torch.bfloat16,
-            low_cpu_mem_usage=True,
-            use_flash_attn=True,
-            trust_remote_code=True,
-            device_map="cuda:0",
-            device="cuda:0",
-        ).eval()
+        model = (
+            AutoModel.from_pretrained(
+                args.model_path,
+                torch_dtype=torch.bfloat16,
+                low_cpu_mem_usage=True,
+                use_flash_attn=True,
+                attn_implementation="flash_attention_2",
+                trust_remote_code=True,
+            ).eval()
+        ).to("cuda:0")
 
         tokenizer = AutoTokenizer.from_pretrained(
             args.model_path, trust_remote_code=True, use_fast=False
@@ -235,9 +235,9 @@ def load_generative_model(args, device):
             args.model_path,
             torch_dtype=torch.float16,
             low_cpu_mem_usage=True,
-            device_map="auto",
+            device_map="cuda",
         ).eval()
-        model = model.to("cuda")
+        # model.to("cuda")
 
         processor = AutoProcessor.from_pretrained(args.model_path)
         tokenizer = None
@@ -588,32 +588,71 @@ def eval(args):
                     prompt = processor.apply_chat_template(
                         conversation, add_generation_prompt=True
                     )
-                    print("prompt", prompt)
 
-                    inputs = (
-                        processor(images=image, text=prompt, return_tensors="pt")
-                        .to(torch.float16)
-                        .to(device)
+                    # --- build inputs -----------------------------------------------------------
+                    raw = processor(images=image, text=prompt, return_tensors="pt").to(
+                        device
                     )
+                    print("device", device)
+                    raw["pixel_values"] = raw["pixel_values"].half()  # fp16 pixels
+                    raw["pixel_values"] = raw["pixel_values"].squeeze(0)
 
-                    if len(inputs["pixel_values"].shape) > 4:
-                        inputs["pixel_values"] = inputs["pixel_values"].squeeze(0)
+                    # # move tensors to GPU
+                    # breakpoint()
+                    inputs = {}
+                    for k, v in raw.items():
+                        if k != "image_sizes":
+                            if torch.is_tensor(v):
+                                inputs[k] = v.to(device)
+                            else:
+                                inputs[k] = v
 
-                    allowed = set(inspect.signature(model.forward).parameters)
-                    gen_inputs = {k: v for k, v in inputs.items() if k in allowed}
+                    # ---------------------------------------------------------------------------
 
-                    for key in list(gen_inputs.keys()):
-                        if str(gen_inputs[key].device) != "cuda:0":
-                            gen_inputs[key] = gen_inputs[key].to(device)
+                    with torch.no_grad(), torch.cuda.amp.autocast(dtype=torch.float16):
+                        out_ids = model.generate(
+                            **inputs,
+                            max_new_tokens=200,
+                            do_sample=False,
+                            pad_token_id=model.config.pad_token_id,
+                        )
+                    outputs = processor.decode(out_ids[0], skip_special_tokens=True)
+                    print("outputs", outputs)
 
-                    output = model.generate(
-                        **gen_inputs, max_new_tokens=200, do_sample=False
+                elif "cambrian" in args.model_path.lower():
+                    image = Image.open(image).convert("RGB")
+                    print("image", image)
+                    print("question", question)
+                    input_ids, image_tensor, image_sizes, prompt = process(
+                        image,
+                        question,
+                        tokenizer,
+                        processor,
+                        model.config,
+                        args.conv_mode,
                     )
+                    # image_tensor = image_tensor
+                    # print("image_tensor", image_tensor.shape)
+                    print("image_sizes", image_sizes)
+                    input_ids = input_ids.to(device=model.device, non_blocking=True)
 
-                    outputs = processor.decode(
-                        output[0], skip_special_tokens=True
-                    ).split("assistant")[-1]
-                    # print("outputs", outputs)
+                    with torch.inference_mode():
+                        output_ids = model.generate(
+                            input_ids,
+                            images=image_tensor,
+                            image_sizes=image_sizes,
+                            do_sample=True if args.temperature > 0 else False,
+                            temperature=args.temperature,
+                            num_beams=args.num_beams,
+                            max_new_tokens=1024,
+                            use_cache=True,
+                        )
+
+                        outputs = tokenizer.batch_decode(
+                            output_ids, skip_special_tokens=True
+                        )[0].strip()
+                    print("outputs", outputs)
+
                 else:
                     question = "<image>" + question
                     conv = conv_templates[args.conv_mode].copy()

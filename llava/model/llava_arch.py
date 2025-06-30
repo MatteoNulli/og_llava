@@ -366,7 +366,7 @@ class LlavaMetaForCausalLM(ABC):
         self.mask_limiting = False
         self.mask_limit = 20
         self.averaging_global_view = True
-        self.no_masktoken = True
+        self.no_masktoken = False
         self.use_sliding_window = False
         self.number_of_masks = 5
         self.use_dummy_masks = False

@@ -28,7 +28,7 @@ from loguru import logger as eval_logger
 
 import sys
 
-llava_pth = os.path.abspath(os.path.join(os.path.split(__file__)[0], "../../../"))  # -> /data/chatgpt/notebooks/mnulli/llava/iu-lmms-eval/lmms_eval/models/
+llava_pth = os.path.abspath(os.path.join(os.path.split(__file__)[0], "../../../"))  # -> /data/chatgpt/notebooks/mnulli/llava/lmms_eval/lmms_eval/models/
 sys.path.append(f"{llava_pth}")
 
 try:
@@ -327,7 +327,7 @@ class Llava(lmms):
         import glob
 
         partitions = [os.path.join(base_dir, p) for p in os.listdir(base_dir) if p.startswith("partition_")]
-
+        # breakpoint()
         for partition_dir in partitions:
             # print("image_id", image_id)
             image_path = os.path.join(partition_dir, image_id)
@@ -358,6 +358,7 @@ class Llava(lmms):
         chunks = re_ords.get_batched(n=self.batch_size, batch_fn=None)
         num_iters = len(requests) // self.batch_size if len(requests) % self.batch_size == 0 else len(requests) // self.batch_size + 1
         pbar = tqdm(total=num_iters, disable=(self.rank != 0), desc="Model Responding")
+        count = 0
         for chunk in chunks:
             contexts, all_gen_kwargs, doc_to_visual, doc_id, task, split = zip(*chunk)
             task = task[0]
@@ -368,11 +369,11 @@ class Llava(lmms):
             self.model.model.custom_rotary_embedding = False
             if task == "cvbench":
                 base_dir = "/mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_benchmarks/nyu-cvbench/arrays"
-                self.model.model.sam2_masking_token = False
+                self.model.model.sam2_masking_token = True
                 self.model.model.custom_rotary_embedding = False
             elif task == "mmvp":
                 base_dir = "/mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_benchmarks/mmvp/arrays"
-                self.model.model.sam2_masking_token = False
+                self.model.model.sam2_masking_token = True
                 self.model.model.custom_rotary_embedding = False
             elif "aro" in task:
                 base_dir = "/mnt/nushare2/data/mnulli/thesis/data/sam2/segmentation_data_benchmarks/gowitheflow___aro/arrays"
@@ -388,15 +389,33 @@ class Llava(lmms):
                 self.model.model.custom_rotary_embedding = False
 
             if self.model.model.sam2_masking_token:
-                for idx, visual in enumerate(batched_visuals):
-                    image_id = visual[-1]
 
+                for idx, visual in enumerate(batched_visuals):
+                    # breakpoint()
+                    count += 1
+                    if "aro" not in task:
+                        image_id = visual[-1]
+                    elif task == "aro-coco-order":
+                        image_id = f"gowitheflow___{task}_picture_{count}"
+                    elif task == "aro-flickr-order":
+                        flickr_count = count + 25010
+                        image_id = f"gowitheflow___{task}_picture_{flickr_count}"
+                    elif task == "aro-visual-attribution":
+                        attribution_count = count + 25010 + 5000
+                        image_id = f"gowitheflow___{task}_picture_{attribution_count}"
+                    elif task == "aro-visual-relation":
+                        relation_count = count + 25010 + 5000 + 28748
+                        image_id = f"gowitheflow___{task}_picture_{relation_count}"
+
+                    # print("image_id", image_id)
                     # print("visual", visual)
                     mask_files = self.find_mask_files(
                         base_dir=base_dir,
                         image_id=image_id,
                     )
+                    # print("mask_files", mask_files)
                     masks = self.read_mask_arrays(mask_files)
+                    # print("masks", masks)
                     # print("len(masks)", len(masks))
                     if len(masks) >= 1:
                         masks = [torch.from_numpy(mask_np).to(self.model.device) for mask_np in masks]

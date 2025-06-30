@@ -160,6 +160,8 @@ cython_debug/
 #.idea/
 
 
-iu-lmms-eval/lmms_eval/tasks/ebench_sm_gen
+lmms_eval/lmms_eval/tasks/ebench_sm_gen
 
 sam2/core*
+
+*todel*

@@ -1,7 +1,7 @@
 void setBuildStatus(String checkName, String message, String state) {
     step([
         $class: 'GitHubCommitStatusSetter',
-        reposSource: [$class: 'ManuallyEnteredRepositorySource', url: 'https://github.corp.ebay.com/computer-vision/iu-lmms-eval'],
+        reposSource: [$class: 'ManuallyEnteredRepositorySource', url: 'https://github.corp.ebay.com/computer-vision/lmms_eval'],
         contextSource: [$class: 'ManuallyEnteredCommitContextSource', context: checkName],
         errorHandlers: [[$class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
         statusResultSource: [ $class: 'ConditionalStatusResultSource', results: [[$class: 'AnyBuildResult', message: message, state: state]] ],
@@ -32,7 +32,7 @@ pipeline {
                     $class: 'GitSCM',
                     branches: [[name: 'origin-pull/pull/${GITHUB_PR_NUMBER}/merge']],
                     extensions: [[$class: 'ChangelogToBranch', options: [compareRemote: 'origin', compareTarget: '${GITHUB_PR_TARGET_BRANCH}']]],
-                    userRemoteConfigs: [[credentialsId: '7310b309-551f-4c00-ab53-3a742bf17514', name: 'origin', refspec: '+refs/pull/${GITHUB_PR_NUMBER}/merge:refs/remotes/origin-pull/pull/${GITHUB_PR_NUMBER}/merge', url: 'https://github.corp.ebay.com/computer-vision/iu-lmms-eval']]])
+                    userRemoteConfigs: [[credentialsId: '7310b309-551f-4c00-ab53-3a742bf17514', name: 'origin', refspec: '+refs/pull/${GITHUB_PR_NUMBER}/merge:refs/remotes/origin-pull/pull/${GITHUB_PR_NUMBER}/merge', url: 'https://github.corp.ebay.com/computer-vision/lmms_eval']]])
             }
         }
         stage('Build and push Docker image sha tag') {

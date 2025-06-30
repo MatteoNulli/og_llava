@@ -1,27 +1,25 @@
 #!/bin/bash
 
 
-# export http_proxy=http://httpproxy-tcop.vip.ebay.com:80 
-# export https_proxy=http://httpproxy-tcop.vip.ebay.com:80 
-# export no_proxy=krylov,ams,ems,mms,localhost,127.0.0.1,.vip.hadoop.ebay.com,.vip.ebay.com,github.ebay.com,.tess.io,.corp.ebay.com,.ebayc3.com,.qa.ebay.com,.dev.ebay.com
-# export HTTP_PROXY=http://httpproxy-tcop.vip.ebay.com:80
-# export HTTPS_PROXY=http://httpproxy-tcop.vip.ebay.com:80
-# export NO_PROXY=krylov,ams,ems,mms,localhost,127.0.0.1,.vip.hadoop.ebay.com,.vip.ebay.com,github.ebay.com,.tess.io,.corp.ebay.com,.ebayc3.com,.qa.ebay.com,.dev.ebay.com
+export http_proxy=http://httpproxy-tcop.vip.ebay.com:80 
+export https_proxy=http://httpproxy-tcop.vip.ebay.com:80 
+export no_proxy=krylov,ams,ems,mms,localhost,127.0.0.1,.vip.hadoop.ebay.com,.vip.ebay.com,github.ebay.com,.tess.io,.corp.ebay.com,.ebayc3.com,.qa.ebay.com,.dev.ebay.com
+export HTTP_PROXY=http://httpproxy-tcop.vip.ebay.com:80
+export HTTPS_PROXY=http://httpproxy-tcop.vip.ebay.com:80
+export NO_PROXY=krylov,ams,ems,mms,localhost,127.0.0.1,.vip.hadoop.ebay.com,.vip.ebay.com,github.ebay.com,.tess.io,.corp.ebay.com,.ebayc3.com,.qa.ebay.com,.dev.ebay.com
+export PORT=29500        # or any free port ≥1024
 
-# pip install --proxy http://httpproxy-tcop.vip.ebay.com:80 pycocotools
 
-PORT=${PORT:-"29501"}
 NUM_MACHINES=${NUM_MACHINES:-1}
-NUM_GPUS=${NUM_GPUS:-1}
+NUM_GPUS=${NUM_GPUS:-2}
 
-cd iu-lmms-eval/
+cd /opt/krylov-workflow/src/run_fn_0/lmms_eval/
 
-# TASK=ai2d,mme,mmstar
-# ,mmbench_en_dev,mmvp,cvbench
+
+# TASK=realworldqa,ai2d,mme,mmstar,mmbench_en_dev
 # TASK=mme,mmstar
-# TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
-TASK=mmvp,cvbench
-# TASK=mmvp
+TASK=aro-coco-order,aro-flickr-order,aro-visual-attribution,aro-visual-relation
+# TASK=mmvp,cvbench
 
 
 # if [[ "$TASK" =~ mmbench ]]; then
@@ -31,7 +29,6 @@ TASK=mmvp,cvbench
 
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_no_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
-# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_no_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora/checkpoint-4880
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/4b_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/no_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_standard_llava/standard_llava15-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
@@ -47,23 +44,27 @@ TASK=mmvp,cvbench
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/sliding_window_5-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-capEpochs-1-sftEpochs
 
 # # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_no_global_view_oldllavacodebase-meta-llama--Llama-3.2-1B-Instruct-openclip-bliplaion_llava-lora-1-EPOCHS
-# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_standard_llava/standard_llava15-meta-llama--Llama-3.2-1B-Instruct-openclip-bliplaion-lora-1-EPOCHS
+# # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_standard_llava/standard_llava15-meta-llama--Llama-3.2-1B-Instruct-openclip-bliplaion-lora-1-EPOCHS
 
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
-# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_standard_llava/standard-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/image_filling_noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_standard_llava/standard-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_standard_llava/standard_llava15-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
 
-# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_avg_global-view-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-capEpochs-1-sftEpochs
 
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_avg_global-view-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-capEpochs-1-sftEpochs
 
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/subobject_tokenization-second_run-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-capEpochs-1-sftEpochs
-# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/avg_global_view-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
-# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/global_view-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_no_global_view_llava-Meta-Llama-3_1-8B-Instruct-openclip-bliplaion-lora
+
+
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/learnable_encoding_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 
 ## CUSTOM Encoding
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/custom_rot-noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
@@ -71,7 +72,20 @@ TASK=mmvp,cvbench
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/learnable_encoding_aftermlp_noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/learnable_encoding_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
-# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/2d_sinusoidal_encoding_fixed_aftermlp_noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encoding_fixed_aftermlp_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+
+# # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/1d_sinusoidal_encoding_fixed_aftermlp_nomasktoken_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/2d_sinusoidal_encoding_fixed_aftermlp_nomasktoken_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/learnable_posencoding_fixed_aftermlp_nomasktoken_noglob-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/nomasktoken_avg_globalview-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_8b/nomasktoken_globalview-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft/noglob-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/nomasktoken_no_globalview-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+# CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_3b/nomasktoken_avg_globalview-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
+
+# /mnt/nushare2/data/mnulli/thesis/testruns/sft/8bs_no_masktoken-Meta-Llama-3_1-8B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-llava_mix665k-lora-1-EPOCHS
 
 ##CAMBRIAN
 # CKPT_PATH=/mnt/nushare2/data/mnulli/thesis/testruns/sft_standard_llava/standard-meta-llama--Llama-3.2-3B-Instruct-openai-clip-vit-large-patch14-336-blip_laion-Cambrian7M_withsystemprompt.json-v2-lora-1-EPOCHS
@@ -80,19 +94,19 @@ TASK=mmvp,cvbench
 
 # MODEL_BASE=/mnt/mtrepo/data/wwalentynowicz/models/Meta-Llama-3_1-8B-Instruct
 # # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-3B-Instruct
-# # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-1B-Instruct
-# # builder in LLava expect a particular model_name for parsing
+# # # MODEL_BASE=/mnt/nushare2/data/mnulli/model_zoos/language_models/meta-llama--Llama-3.2-1B-Instruct
+# # # builder in LLava expect a particular model_name for parsing
 # MODEL_NAME=llava
 # CONV_MODE=llama3
 # MODEL_ARGS=pretrained=$CKPT_PATH,model_base=$MODEL_BASE,conv_template=$CONV_MODE
 
-# CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/nyu-visionx--cambrian-8b
-# MODEL_NAME=cambrian
-# MODEL_ARGS=pretrained=$CKPT_PATH
-
-CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/models--ByteDance--Sa2VA-8B/snapshots/43ee408e24e7fc571a4e33862f663c2dbc6e11da
-MODEL_NAME=internvl2
+CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/nyu-visionx--cambrian-8b
+MODEL_NAME=cambrian
 MODEL_ARGS=pretrained=$CKPT_PATH
+
+# CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/models--ByteDance--Sa2VA-8B/snapshots/43ee408e24e7fc571a4e33862f663c2dbc6e11da
+# MODEL_NAME=internvl2
+# MODEL_ARGS=pretrained=$CKPT_PATH
 
 
 # CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/models--llava-hf--llava-1.5-7b-hf/snapshots/6ceb2ed33cb8f107a781c431fe2e61574da69369
@@ -111,6 +125,9 @@ MODEL_ARGS=pretrained=$CKPT_PATH
 # CKPT_PATH=/mnt/nushare2/data/vorshulevich/models/vlm/llava_ov/finetune/superpod_llava-onevision-siglip2-Qwen2-7B-Instruct-mid_stage-ov_stage-full-lm-qwen2
 # MODEL_NAME=llava
 # MODEL_ARGS=pretrained=$CKPT_PATH
+
+
+
 
 
 echo $TASK

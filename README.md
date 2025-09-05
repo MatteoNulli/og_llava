@@ -2,6 +2,8 @@
 
 ### M. Nulli, I. Najdenkoska, M. M. Derakhshani, M. Dorkenwald, Y. M. Asano
 
+### Links: [Paper](paper/Long.pdf)
+
 ---
 ## Motivation and Main Process
 
@@ -124,9 +126,14 @@ More information at [paper/Long.pdf](paper/Long.pdf).
   </tr>
 </table>
 
+## Training
+Coming soon...
+
+## Evaluation
+Coming soon...
 
 
-## Acknoledgement 
+## Acknowledgments 
 
 We would like to thank the following works that inspired this project:  
 - [When and why vision-language models behave like bags-of-words, and what to do about it?](https://arxiv.org/abs/2210.01936)

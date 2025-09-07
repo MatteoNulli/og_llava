@@ -87,7 +87,7 @@ LoRA emphasizes that not all parameters of the LLM are unfrozen, only the LoRA l
 ## Evaluation
 We employ a local fork of [lmms_eval](lmms_eval) to ensure a correct evaluation of our models.
 You can run all our benchmarks except ConMe following those guidelines. 
-Read more at [lmms_eval/README.md](lmms_eval/README.md) or [lmms_eval/README_lmms.md](lmms_eval/README_lmms.md).
+Read more at [lmms_eval/README.md](lmms_eval/README.md) or on the original [lmms_eval repository](https://github.com/EvolvingLMMs-Lab/lmms-eval).
 
 For ConMe you can follow [conme_eval.sh](llava/eval/conme/conme_eval.sh), inspired by [LLaVA's original evaluation suite](https://github.com/haotian-liu/LLaVA/tree/main/llava/eval). 
 
@@ -98,9 +98,11 @@ Coming soon...
 
 ## Acknowledgments 
 
-We would like to thank the following works that inspired this project:  
+We would like to thank the following works that inspired/enabled this project:  
 - [When and why vision-language models behave like bags-of-words, and what to do about it?](https://arxiv.org/abs/2210.01936)
 - [In-Context Learning Improves Compositional Understanding of Vision-Language Models](https://arxiv.org/abs/2407.15487) 
+- [lmms-eval](https://github.com/EvolvingLMMs-Lab/lmms-eval)
+- [Improved Baselines with Visual Instruction Tuning](https://arxiv.org/pdf/2310.03744) + [code](https://github.com/haotian-liu/LLaVA) 
 - [ConMe: Rethinking Evaluation of Compositional Reasoning for Modern VLMs](https://arxiv.org/abs/2406.08164)   
 - [Eyes Wide Shut? Exploring the Visual Shortcomings of Multimodal LLMs](https://arxiv.org/abs/2401.06209)
 - [Cambrian-1: A Fully Open, Vision-Centric Exploration of Multimodal LLMs](https://arxiv.org/abs/2406.16860)  

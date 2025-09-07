@@ -10,3 +10,4 @@ python submit.py \
     --cpu 60 \
     --memory 512 \
     --pvc
+    

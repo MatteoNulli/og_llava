@@ -1,9 +1,9 @@
 # Object-Guided Visual Tokens: Eliciting Compositional Reasoning in Multimodal Language Models
 
-### M. Nulli, I. Najdenkoska, M. M. Derakhshani, M. Dorkenwald, V. Orshulevich, Y. M. Asano
+##### M. Nulli, I. Najdenkoska, M. M. Derakhshani, M. Dorkenwald, V. Orshulevich, Y. M. Asano
 
-### Links: [Paper](paper/Long.pdf), [Blogpost](https://matteonulli.github.io/blog/2025/ogllava/)
-
+###### Links: 📄 [Paper](https://github.com/MatteoNulli/og_llava/blob/main/paper/LongPaper.pdf) | 📝 [Blogpost](https://matteonulli.github.io/blog/2025/ogllava/) | 🧑‍💻 [Code](https://github.com/MatteoNulli/og_llava/tree/main)
+<br>
 ---
 # Main Process
 

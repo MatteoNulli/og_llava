@@ -165,3 +165,7 @@ lmms_eval/lmms_eval/tasks/ebench_sm_gen
 sam2/core*
 
 *todel*
+
+run_*
+
+submit.py

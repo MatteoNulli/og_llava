@@ -169,3 +169,6 @@ sam2/core*
 run_*
 
 submit.py
+
+llava/eval/vismin-bench/
+llava/eval/winoground/

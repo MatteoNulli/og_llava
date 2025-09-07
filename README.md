@@ -102,6 +102,16 @@ We would like to thank the following works that inspired this project:
 - [Eyes Wide Shut? Exploring the Visual Shortcomings of Multimodal LLMs](https://arxiv.org/abs/2401.06209)
 - [Cambrian-1: A Fully Open, Vision-Centric Exploration of Multimodal LLMs](https://arxiv.org/abs/2406.16860)  
 
- ## Citation
+## Citation
 
 If you find our work useful for your research and applications, please consider citing us.
+
+```bibtex
+@online{nulli2025ogllava,
+  author  = {Nulli, Matteo and Najdenkoska, I., and Derakhshani, M. M., and Dorkenwald, M., Orshulevich, V., and Asano, Y. M.},
+  title   = {Object-Guided Visual Tokens: Eliciting Compositional Reasoning in Multimodal Language Models},
+  url     = {https://matteonulli.github.io/blog/2025/ogllava/},
+  year    = {2025},
+  urldate = {2025-09-05}
+}
+```

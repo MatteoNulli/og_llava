@@ -2,34 +2,14 @@
 
 ## Evaluation
 
-### Supported Benchmarks
-
-Given the user has access to `/mnt/nushare2/`, we currently support the following benchmarks:
-
-- Open Source benchmarks
-```
-textvqa_test,ai2d,mme,mmbench_en_dev,mmstar,hallusion_bench_image,cvbench,mmmu_val,scienceqa
-```
-
-### Krylov Workspace
-To run the evaluation in workspace use [eval_lmms_workspace.sh](krylov/scripts/eval_lmms_workspace.sh).
-
-- Based on your task accordingly modify the `TASK` (you can list multiple together like `mmmu_val,mmbench_en_dev,mme`) `CKPT_PATH`, `OUTPUT_PATH` and `MODEL_NAME`.
-    - The `MODEL_NAME` needs to be one of the supported models from [here](lmms_eval/models).
-- Some models require `conversation_templates` or other details. Check [here](README_lmms.md) for a more comprehensive explanation. 
-
-### Krylov Workflow
-To run the evaluation in workflow use [eval_lmms_workflow.sh](krylov/scripts/eval_lmms_workflow.sh), which can be used directly by bashing [run_eval.sh](run_eval.sh) and submitting a job.
-
-
-#### Usage example
+## Usage example
 - To evaluate `InternVL2.5-8B` on `mme`, modify either `krylov/scripts/eval_lmms_workspace.sh` or `krylov/scripts/eval_lmms_workflow.sh` (depending on the evaluation location) with:
     ```
     TASK=mme
-    CKPT_PATH=/mnt/nushare2/data/mnulli/model_zoos/opensource-vlms/models--OpenGVLab--InternVL2_5-8B/snapshots/d64b85a1392275381ddbb7525db05e587303d59e
+    CKPT_PATH=models--OpenGVLab--InternVL2_5-8B
     MODEL_NAME=internvl2
 
-    OUTPUT_PATH=/mnt/nushare2/data/mnulli/llava_ov/playground/lmms_eval_results/$TASK_SUFFIX/$MODEL_NAME
+    OUTPUT_PATH=./lmms_eval_results/$TASK_SUFFIX/$MODEL_NAME
 
     accelerate launch --num_machines $NUM_MACHINES --num_processes $NUM_GPUS --main_process_port $PORT --mixed_precision no --dynamo_backend no \
         lmms_eval/__main__.py \

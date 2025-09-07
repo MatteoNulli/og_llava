@@ -86,11 +86,16 @@ LoRA emphasizes that not all parameters of the LLM are unfrozen, only the LoRA l
   </tr>
 </table>
 
+## Evaluation
+We employ a local fork of [lmms_eval](lmms_eval) to ensure a correct evaluation of our models.
+You can run all our benchmarks except ConMe following those guidelines. 
+Read more at [lmms_eval/README.md](lmms_eval/README.md) or [lmms_eval/README_lmms.md](lmms_eval/README_lmms.md).
+
+For ConMe you can follow [conme_eval.sh](llava/eval/conme/conme_eval.sh), inspired by [LLaVA's original evaluation suite](https://github.com/haotian-liu/LLaVA/tree/main/llava/eval). 
+
 ## Training
 Coming soon...
 
-## Evaluation
-Coming soon...
 
 
 ## Acknowledgments 

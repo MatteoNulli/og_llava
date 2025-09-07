@@ -23,8 +23,6 @@ Concurrently, we pass the input image through `OG-Fusion`. Here we:
 1. Use a Segmentation model to retrieve the masks,  
 2. Downsample the segmentations, and  
 3. Apply these masks onto the visual features.  
-
-These Visual Embeddings are then:  
 4. Concatenated together and passed through a Multi-Layer Perceptron to produce Object-Guided Visual Tokens (**_OGVT_**).  
 
 The **_OGVT_** are then given as input to a Large Language Model together with Textual Tokens to produce an output.  

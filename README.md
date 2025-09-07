@@ -2,26 +2,10 @@
 
 ### M. Nulli, I. Najdenkoska, M. M. Derakhshani, M. Dorkenwald, V. Orshulevich, Y. M. Asano
 
-### Links: [Paper](paper/Long.pdf)
+### Links: [Paper](paper/Long.pdf), [Blogpost](https://matteonulli.github.io/blog/2025/ogllava/)
 
 ---
-## Motivation and Main Process
-
-Most Multimodal Large Language Models (MLLMs) use contrastively pre-trained vision encoders.  
-They work well on many tasks, but often struggle when it comes to **compositional understanding** and **reasoning** about what’s actually in an image.  
-That’s because these encoders are mainly trained for image–caption retrieval, not for truly breaking down and understanding all parts of a scene.  
-
-Another issue is efficiency: state-of-the-art vision encoders generate **2–3x more visual tokens**, which slows down both training and inference.  
-
-To tackle these problems, we introduce **OG-LLaVA (Object-Guided LLaVA)**.  
-With our new connector design, **`OG-Fusion`**, the model can reason about visual content more effectively—without adding lots of extra tokens or fine-tuning the vision encoder itself.  
-
-At the core of `OG-Fusion` is a simple but powerful idea: combine **CLIP representations** with **segmentation masks**.  
-This lets OG-LLaVA leverage the descriptive strength of segmentation models to better capture **object relationships** and **spatial arrangements**.  
-
-The result?  
-**OG-LLaVA outperforms existing models on tasks that demand deeper visual reasoning and grounding**, all while staying efficient.
-
+# Main Process
 
 <table align="center">
   <tr align="center">
@@ -47,7 +31,6 @@ The **_OGVT_** are then given as input to a Large Language Model together with T
 The ❄️ (snowflake) and 🔥 (fire) represent modules whose parameters are kept **frozen** or **turned on**.  
 LoRA emphasizes that not all parameters of the LLM are unfrozen, only the LoRA layers.
 
-More information at [paper/Long.pdf](paper/Long.pdf).
 
 ## Visualizations
 
@@ -100,29 +83,6 @@ More information at [paper/Long.pdf](paper/Long.pdf).
   
   <tr align="left">
     <td colspan=2><a id='figure-1'><b>OG-LLaVA vs LLaVA-1.5 on ConMe Replace-Relation examples.</b></td>
-  </tr>
-</table>
-
-## Results
-<table align="center">
-  <tr align="center">
-      <th><img src="images/main-table.png" alt="." style="width:90%; display:inline-block; margin: 0 2.5%;" /></th>
-  </tr>
-
-  
-  <tr align="left">
-    <td colspan=2><a id='figure-1'><b>OG-LLaVA performance on Compositional Reasoning and Vision Centric tasks compared with LLaVA baselines.</b></td>
-  </tr>
-</table>
-
-<table align="center">
-  <tr align="center">
-      <th><img src="images/og_llava_vs_rivals_weighted.png" alt="." style="width:90%; display:inline-block; margin: 0 2.5%;" /></th>
-  </tr>
-
-  
-  <tr align="left">
-    <td colspan=2><a id='figure-1'><b>OG-LLaVA vs Subobject Level Image Tokenization and LLaVA-1.5 on Compositional Reasoning and Vision Centric tasks.</b></td>
   </tr>
 </table>
 

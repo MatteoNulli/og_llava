@@ -112,11 +112,11 @@ We would like to thank the following works that inspired/enabled this project:
 If you find our work useful for your research and applications, please consider citing us.
 
 ```bibtex
-@online{nulli2025ogllava,
-  author  = {Nulli, Matteo and Najdenkoska, I., and Derakhshani, M. M., and Dorkenwald, M., Orshulevich, V., and Asano, Y. M.},
+@misc{nulli2025ogllava,
+  author  = {Nulli, M. and Najdenkoska, I., and Derakhshani, M. M., and Dorkenwald, M., Orshulevich, V., and Asano, Y. M.},
   title   = {Object-Guided Visual Tokens: Eliciting Compositional Reasoning in Multimodal Language Models},
-  url     = {https://matteonulli.github.io/blog/2025/ogllava/},
+  howpublished  = {https://matteonulli.github.io/blog/2025/ogllava/},
   year    = {2025},
-  urldate = {2025-09-05}
+  note = {Accessed: 2025-09-05}
 }
 ```

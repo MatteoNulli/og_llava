@@ -86,10 +86,8 @@ LoRA emphasizes that not all parameters of the LLM are unfrozen, only the LoRA l
 
 ## Evaluation
 We employ a local fork of [lmms_eval](lmms_eval) to ensure a correct evaluation of our models.
-You can run all our benchmarks except ConMe following those guidelines. 
+You can run all our benchmarks following those guidelines. 
 Read more at [lmms_eval/README.md](lmms_eval/README.md) or on the original [lmms_eval repository](https://github.com/EvolvingLMMs-Lab/lmms-eval).
-
-For ConMe you can follow [conme_eval.sh](llava/eval/conme/conme_eval.sh), inspired by [LLaVA's original evaluation suite](https://github.com/haotian-liu/LLaVA/tree/main/llava/eval). 
 
 ## Training
 Coming soon...
@@ -106,6 +104,7 @@ We would like to thank the following works that inspired/enabled this project:
 - [ConMe: Rethinking Evaluation of Compositional Reasoning for Modern VLMs](https://arxiv.org/abs/2406.08164)   
 - [Eyes Wide Shut? Exploring the Visual Shortcomings of Multimodal LLMs](https://arxiv.org/abs/2401.06209)
 - [Cambrian-1: A Fully Open, Vision-Centric Exploration of Multimodal LLMs](https://arxiv.org/abs/2406.16860)  
+- [Subobject-level Image Tokenization](https://arxiv.org/pdf/2402.14327)
 
 ## Citation
 

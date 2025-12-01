@@ -2,7 +2,9 @@
 
 ##### M. Nulli, I. Najdenkoska, M. M. Derakhshani, M. Dorkenwald, V. Orshulevich, Y. M. Asano
 
-###### Links: 📄 [Paper](https://github.com/MatteoNulli/og_llava/blob/main/paper/LongPaper.pdf) | 📝 [Blogpost](https://matteonulli.github.io/blog/2025/ogllava/) | 🧑‍💻 [Code](https://github.com/MatteoNulli/og_llava/tree/main)
+###### Accepted to EurIPS, Workshop on Principles of Generative Modelling
+
+###### Links:  📄 [Paper](https://openreview.net/pdf?id=yvY1T3hHEQ)  | 📜 [Full Thesis](https://github.com/MatteoNulli/og_llava/blob/main/paper/LongPaper.pdf) | 📝 [Blogpost](https://matteonulli.github.io/blog/2025/ogllava/) | 🧑‍💻 [Code](https://github.com/MatteoNulli/og_llava/tree/main)
 <br>
 
 # Main Process

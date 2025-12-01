@@ -286,11 +286,12 @@ We would like to thank the following works that inspired/enabled this project:
 If you find our work useful for your research and applications, please consider citing us.
 
 ```bibtex
-@misc{nulli2025ogllava,
-  author  = {Nulli, M. and Najdenkoska, I., and Derakhshani, M. M., and Dorkenwald, M., Orshulevich, V., and Asano, Y. M.},
-  title   = {Object-Guided Visual Tokens: Eliciting Compositional Reasoning in Multimodal Language Models},
-  howpublished  = {https://matteonulli.github.io/blog/2025/ogllava/},
-  year    = {2025},
-  note = {Accessed: 2025-09-05}
+@inproceedings{
+nulli2025objectguided,
+title={Object-Guided Visual Tokens: Eliciting Compositional Reasoning in Multimodal Language Models},
+author={Matteo Nulli and Ivona Najdenkoska and Mohammad Mahdi Derakhshani and Yuki M Asano},
+booktitle={EurIPS 2025 Workshop on Principles of Generative Modeling (PriGM)},
+year={2025},
+url={https://openreview.net/forum?id=yvY1T3hHEQ}
 }
 ```

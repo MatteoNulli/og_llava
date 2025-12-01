@@ -286,8 +286,7 @@ We would like to thank the following works that inspired/enabled this project:
 If you find our work useful for your research and applications, please consider citing us.
 
 ```bibtex
-@inproceedings{
-nulli2025objectguided,
+@inproceedings{nulli2025objectguided,
 title={Object-Guided Visual Tokens: Eliciting Compositional Reasoning in Multimodal Language Models},
 author={Matteo Nulli and Ivona Najdenkoska and Mohammad Mahdi Derakhshani and Yuki M Asano},
 booktitle={EurIPS 2025 Workshop on Principles of Generative Modeling (PriGM)},
